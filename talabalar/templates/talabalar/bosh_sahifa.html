@@ -1,0 +1,60 @@
+{% extends "talabalar/base.html" %}
+{% block content %}
+<h3 class="mb-4">Bosh sahifa</h3>
+
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-xl-3"><div class="card p-3"><div class="d-flex align-items-center">
+    <div class="stat-icon me-3"><i class="bi bi-people"></i></div>
+    <div><div class="text-muted small">Talabalar</div><div class="stat-son">{{ talaba_soni }}</div></div>
+  </div></div></div>
+  <div class="col-sm-6 col-xl-3"><div class="card p-3"><div class="d-flex align-items-center">
+    <div class="stat-icon me-3"><i class="bi bi-collection"></i></div>
+    <div><div class="text-muted small">Guruhlar</div><div class="stat-son">{{ guruh_soni }}</div></div>
+  </div></div></div>
+  <div class="col-sm-6 col-xl-3"><div class="card p-3"><div class="d-flex align-items-center">
+    <div class="stat-icon me-3"><i class="bi bi-building"></i></div>
+    <div><div class="text-muted small">Fakultetlar</div><div class="stat-son">{{ fakultet_soni }}</div></div>
+  </div></div></div>
+  <div class="col-sm-6 col-xl-3"><div class="card p-3"><div class="d-flex align-items-center">
+    <div class="stat-icon me-3"><i class="bi bi-book"></i></div>
+    <div><div class="text-muted small">Fanlar</div><div class="stat-son">{{ fan_soni }}</div></div>
+  </div></div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="card p-3 h-100">
+      <h6 class="mb-3">Ta'lim shakli</h6>
+      <div class="d-flex justify-content-between"><span>Davlat granti</span><b>{{ grant_soni }}</b></div>
+      <div class="ulush my-2"><span style="width:{% widthratio grant_soni talaba_soni|default:1 100 %}%"></span></div>
+      <div class="d-flex justify-content-between"><span>To'lov-kontrakt</span><b>{{ kontrakt_soni }}</b></div>
+      <div class="ulush my-2"><span style="width:{% widthratio kontrakt_soni talaba_soni|default:1 100 %}%"></span></div>
+      <h6 class="mt-4 mb-3">Fakultetlar bo'yicha</h6>
+      {% for f in fakultetlar %}
+        <div class="d-flex justify-content-between align-items-center gap-2 border-bottom py-1"><span>{{ f.nomi }}</span><span class="badge text-bg-secondary">{{ f.soni }}</span></div>
+      {% empty %}<p class="text-muted small">Ma'lumot yo'q</p>{% endfor %}
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card p-3 h-100">
+      <h6 class="mb-3"><i class="bi bi-trophy tamgha me-1"></i>Eng yaxshi talabalar</h6>
+      {% for t in eng_yaxshilar %}
+        <a href="{{ t.get_absolute_url }}" class="d-flex justify-content-between border-bottom py-2 text-decoration-none text-body">
+          <span>{{ forloop.counter }}. {{ t.familiya }} {{ t.ism }} <small class="text-muted">({{ t.guruh }})</small></span>
+          <b>{{ t.ortacha|floatformat:1 }}</b>
+        </a>
+      {% empty %}<p class="text-muted small">Hali baholar yo'q</p>{% endfor %}
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card p-3 h-100">
+      <h6 class="mb-3"><i class="bi bi-clock-history me-1"></i>Oxirgi qo'shilganlar</h6>
+      {% for t in oxirgilar %}
+        <a href="{{ t.get_absolute_url }}" class="d-block border-bottom py-2 text-decoration-none text-body">
+          {{ t.familiya }} {{ t.ism }} <small class="text-muted">— {{ t.guruh }}</small>
+        </a>
+      {% empty %}<p class="text-muted small">Talabalar yo'q</p>{% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "talabalar/ochiq_base.html" %}
+{% load static %}
+{% block title %}{{ fakultet.nomi }} — Talabalar bazasi{% endblock %}
+{% block banner %}{% static 'talabalar/slaydlar/jamoa.jpg' %}{% endblock %}
+{% block orqaga %}<a href="{% url 'ochiq_fakultetlar' %}" class="orqaga"><i class="bi bi-arrow-left me-1"></i>Barcha fakultetlar</a>{% endblock %}
+{% block sarlavha %}{{ fakultet.nomi }}{% endblock %}
+{% block izoh %}{{ guruhlar|length }} ta guruh{% endblock %}
+{% block content %}
+<div class="container py-5">
+  {% include "talabalar/_ochiq_taqsimot.html" %}
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead><tr><th>Guruh</th><th>Yo'nalish</th><th>Kurs</th><th>Talabalar</th><th>O'rtacha ball</th></tr></thead>
+        <tbody>
+        {% for g in guruhlar %}
+          <tr>
+            <td class="fw-semibold">{{ g.nomi }}</td><td>{{ g.yonalish }}</td><td>{{ g.kurs }}</td><td>{{ g.soni }}</td>
+            <td>{% if g.ochiq_ortacha is not None %}{{ g.ochiq_ortacha|floatformat:1 }}{% else %}—{% endif %}</td>
+          </tr>
+        {% empty %}<tr><td colspan="5" class="text-center text-muted py-4">Bu fakultetda guruhlar yo'q</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="text-muted small mt-2">Maxfiylik uchun {{ chegara }} nafardan kam talaba baholangan bo'lsa, o'rtacha ball ko'rsatilmaydi.</p>
+</div>
+{% endblock %}

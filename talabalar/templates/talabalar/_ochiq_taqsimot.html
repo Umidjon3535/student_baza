@@ -1,0 +1,34 @@
+<div class="row g-3 mb-4">
+  {% if taqsimot.korsatish %}
+    <div class="col-md-4">
+      <div class="card p-4 h-100">
+        <div class="stat-son">{{ taqsimot.ortacha|floatformat:1 }}</div>
+        <div class="text-muted small mb-3">O'rtacha ball (100 dan)</div>
+        <div class="stat-son">{{ taqsimot.otish_foizi }}%</div>
+        <div class="text-muted small mb-3">O'zlashtirish (55 ball va undan yuqori)</div>
+        <div class="stat-son">{{ taqsimot.jami }}</div>
+        <div class="text-muted small">Baho, {{ taqsimot.talaba }} nafar talaba bo'yicha</div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card p-4 h-100">
+        <h2 class="h5 mb-3">Baholar taqsimoti</h2>
+        {% for t in taqsimot.qatorlar %}
+          <div class="ustun-qator" title="{{ t.baho }} baho: {{ t.soni }} ta ({{ t.foiz }}%)">
+            <span class="fw-semibold">{{ t.baho }} baho</span>
+            <div class="chiziqcha"><span class="baho-{{ t.baho }}" style="width:{{ t.foiz }}%"></span></div>
+            <span class="text-end small">{{ t.soni }} · {{ t.foiz }}%</span>
+          </div>
+        {% endfor %}
+        <p class="text-muted small mt-3 mb-0">86–100 ball: 5 · 71–85: 4 · 55–70: 3 · 0–54: 2</p>
+      </div>
+    </div>
+  {% else %}
+    <div class="col-12">
+      <div class="card p-4 text-center text-muted">
+        <i class="bi bi-shield-lock fs-2 mb-2"></i>
+        Maxfiylik uchun natijalar kamida {{ taqsimot.chegara }} nafar talaba baholangach ko'rsatiladi.
+      </div>
+    </div>
+  {% endif %}
+</div>

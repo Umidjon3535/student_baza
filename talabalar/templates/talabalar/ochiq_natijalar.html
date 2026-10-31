@@ -1,0 +1,56 @@
+{% extends "talabalar/ochiq_base.html" %}
+{% load static %}
+{% block title %}Natijalar — Talabalar bazasi{% endblock %}
+{% block banner %}{% static 'talabalar/slaydlar/bitiruv.jpg' %}{% endblock %}
+{% block sarlavha %}Natijalar{% endblock %}
+{% block izoh %}Baholarni fakultet, kurs va semestr bo'yicha solishtiring.{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <form method="get" class="card p-3 mb-4">
+    <div class="row g-2">
+      <div class="col-md-4">
+        <label class="form-label small" for="f-fakultet">Fakultet</label>
+        <select id="f-fakultet" name="fakultet" class="form-select" onchange="this.form.submit()">
+          <option value="">Barcha fakultetlar</option>
+          {% for f in fakultetlar %}<option value="{{ f.pk }}" {% if filtr.fakultet == f.pk|stringformat:"s" %}selected{% endif %}>{{ f.nomi }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label small" for="f-kurs">Kurs</label>
+        <select id="f-kurs" name="kurs" class="form-select" onchange="this.form.submit()">
+          <option value="">Barchasi</option>
+          {% for k in kurslar %}<option value="{{ k }}" {% if filtr.kurs == k|stringformat:"s" %}selected{% endif %}>{{ k }}-kurs</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label small" for="f-semestr">Semestr</label>
+        <select id="f-semestr" name="semestr" class="form-select" onchange="this.form.submit()">
+          <option value="">Barchasi</option>
+          {% for s in semestrlar %}<option value="{{ s }}" {% if filtr.semestr == s|stringformat:"s" %}selected{% endif %}>{{ s }}-semestr</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2 d-flex align-items-end gap-1">
+        <button class="btn btn-dark w-100">Ko'rsatish</button>
+        <a href="{% url 'ochiq_natijalar' %}" class="btn btn-outline-secondary" title="Tozalash" aria-label="Tozalash"><i class="bi bi-x-lg"></i></a>
+      </div>
+    </div>
+  </form>
+
+  {% include "talabalar/_ochiq_taqsimot.html" %}
+
+  <div class="card p-4">
+    <h2 class="h5 mb-3">Guruhlar reytingi</h2>
+    {% for g in guruhlar %}
+      <div class="reyting-qator">
+        <div><b>{{ g.nomi }}</b> <span class="text-muted small d-block d-sm-inline">{{ g.fakultet.nomi }} · {{ g.kurs }}-kurs</span></div>
+        {% if g.ochiq_ortacha is not None %}
+          <div class="chiziqcha"><span style="width:{{ g.ochiq_ortacha|floatformat:0 }}%"></span></div>
+          <b class="text-end">{{ g.ochiq_ortacha|floatformat:1 }}</b>
+        {% else %}
+          <div class="text-muted small">Natija yashirilgan: {{ chegara }} nafardan kam talaba baholangan</div><b class="text-end">—</b>
+        {% endif %}
+      </div>
+    {% empty %}<p class="text-muted mb-0">Bu filtr bo'yicha guruh topilmadi.</p>{% endfor %}
+  </div>
+</div>
+{% endblock %}

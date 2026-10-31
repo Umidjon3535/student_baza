@@ -1,0 +1,48 @@
+{% extends "talabalar/base.html" %}
+{% block content %}
+<h3 class="mb-4">Hisobotlar</h3>
+<div class="row g-3 mb-3">
+  <div class="col-lg-6">
+    <div class="card p-3 h-100">
+      <h6 class="mb-3">Guruhlar bo'yicha o'rtacha ball</h6>
+      <table class="table table-sm align-middle mb-0">
+        <thead class="table-light"><tr><th>Guruh</th><th>Talabalar</th><th>O'rtacha</th></tr></thead>
+        <tbody>
+        {% for g in guruhlar %}
+          <tr><td><a href="{% url 'talaba_list' %}?guruh={{ g.pk }}" class="text-decoration-none">{{ g.nomi }}</a></td><td>{{ g.soni }}</td><td>{{ g.ortacha|floatformat:1|default:"—" }}</td></tr>
+        {% empty %}<tr><td colspan="3" class="text-center text-muted py-3">Guruhlar yo'q</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card p-3 h-100">
+      <h6 class="mb-3">Fakultetlar bo'yicha o'rtacha ball</h6>
+      <table class="table table-sm align-middle mb-0">
+        <thead class="table-light"><tr><th>Fakultet</th><th>Talabalar</th><th>O'rtacha</th></tr></thead>
+        <tbody>
+        {% for f in fakultetlar %}
+          <tr><td><a href="{% url 'talaba_list' %}?fakultet={{ f.pk }}" class="text-decoration-none">{{ f.nomi }}</a></td><td>{{ f.soni }}</td><td>{{ f.ortacha|floatformat:1|default:"—" }}</td></tr>
+        {% empty %}<tr><td colspan="3" class="text-center text-muted py-3">Fakultetlar yo'q</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="card p-3">
+  <h6 class="mb-3"><i class="bi bi-exclamation-triangle text-danger me-1"></i>O'zlashtirmaganlar (ball 55 dan past) <span class="badge text-bg-danger">{{ ozlashtirmaganlar|length }}</span></h6>
+  <div class="table-responsive">
+    <table class="table table-sm table-hover align-middle mb-0">
+      <thead class="table-light"><tr><th>Talaba</th><th>Guruh</th><th>Fan</th><th>Ball</th><th>Sana</th></tr></thead>
+      <tbody>
+      {% for b in ozlashtirmaganlar %}
+        <tr>
+          <td><a href="{{ b.talaba.get_absolute_url }}" class="text-decoration-none">{{ b.talaba.familiya }} {{ b.talaba.ism }}</a></td>
+          <td>{{ b.talaba.guruh }}</td><td>{{ b.fan }}</td><td>{{ b.ball }}</td><td class="small">{{ b.sana|date:"d.m.Y" }}</td>
+        </tr>
+      {% empty %}<tr><td colspan="5" class="text-center text-muted py-3">O'zlashtirmaganlar yo'q</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

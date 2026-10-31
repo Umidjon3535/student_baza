@@ -1,0 +1,27 @@
+{% extends "talabalar/base.html" %}
+{% block content %}
+<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-4">
+  <h3 class="mb-0">Guruhlar</h3>
+  <a href="{% url 'guruh_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Yangi guruh</a>
+</div>
+{% include "talabalar/_id_filtr.html" %}
+<div class="card"><div class="table-responsive">
+  <table class="table table-hover align-middle mb-0">
+    <thead class="table-light"><tr>{% include "talabalar/_id_sarlavha.html" %}<th>Guruh</th><th>Fakultet</th><th>Yo'nalish</th><th>Kurs</th><th>Talabalar</th><th class="text-end">Amallar</th></tr></thead>
+    <tbody>
+    {% for g in object_list %}
+      <tr>
+        <td>{{ g.pk }}</td>
+        <td class="fw-semibold"><a href="{% url 'talaba_list' %}?guruh={{ g.pk }}" class="text-decoration-none">{{ g.nomi }}</a></td>
+        <td>{{ g.fakultet }}</td><td>{{ g.yonalish }}</td><td>{{ g.kurs }}</td>
+        <td><span class="badge text-bg-secondary">{{ g.soni }}</span></td>
+        <td class="text-end text-nowrap">
+          <a href="{% url 'guruh_update' g.pk %}" class="btn btn-sm btn-outline-secondary" title="Tahrirlash" aria-label="Tahrirlash"><i class="bi bi-pencil"></i></a>
+          <a href="{% url 'guruh_delete' g.pk %}" class="btn btn-sm btn-outline-danger" title="O'chirish" aria-label="O'chirish"><i class="bi bi-trash"></i></a>
+        </td>
+      </tr>
+    {% empty %}<tr><td colspan="7" class="text-center text-muted py-4">Guruhlar yo'q</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div></div>
+{% endblock %}

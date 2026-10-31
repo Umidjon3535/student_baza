@@ -1,0 +1,120 @@
+{% extends "talabalar/ochiq_base.html" %}
+{% load static %}
+{% block nav_sinf %}ochiq-nav-ustki{% endblock %}
+{% block bosh %}
+<header class="slayder-qobiq">
+  <div id="slayder" class="carousel slide carousel-fade slayder" aria-label="Bosh sahifa slaydlari">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#slayder" data-bs-slide-to="0" class="active" aria-current="true" aria-label="1-slayd"></button>
+      <button type="button" data-bs-target="#slayder" data-bs-slide-to="1" aria-label="2-slayd"></button>
+      <button type="button" data-bs-target="#slayder" data-bs-slide-to="2" aria-label="3-slayd"></button>
+      <button type="button" data-bs-target="#slayder" data-bs-slide-to="3" aria-label="4-slayd"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{% static 'talabalar/slaydlar/talaba.jpg' %}" alt="Qo'lida daftar ushlab turgan talaba auditoriyada" style="object-position:70% 8%">
+        <div class="slayd-matn"><div class="container">
+          <span class="slayd-belgi">Bilim sari</span>
+          <h1>Har bir talabaning yo'li shu yerdan boshlanadi</h1>
+          <p>Guruhlar, fanlar va o'quv natijalari yagona tizimda jamlangan.</p>
+          <a href="{% url 'ochiq_natijalar' %}" class="btn btn-oltin btn-lg">Natijalarni ko'rish</a>
+        </div></div>
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'talabalar/slaydlar/kutubxona.jpg' %}" alt="Kitoblar bilan to'la aylana shakldagi kutubxona">
+        <div class="slayd-matn"><div class="container">
+          <span class="slayd-belgi">Fanlar</span>
+          <h2>Kitobdan boshlangan bilim, baho bilan o'lchanadi</h2>
+          <p>Har bir fan bo'yicha kredit, semestr va o'rtacha ball.</p>
+          <a href="{% url 'ochiq_fanlar' %}" class="btn btn-oltin btn-lg">Fanlarni ko'rish</a>
+        </div></div>
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'talabalar/slaydlar/jamoa.jpg' %}" alt="Stol atrofida birga o'qiyotgan talabalar">
+        <div class="slayd-matn"><div class="container">
+          <span class="slayd-belgi">Fakultetlar</span>
+          <h2>Birga o'qiymiz, birga o'samiz</h2>
+          <p>Fakultetlar va guruhlar bo'yicha umumiy ko'rsatkichlar.</p>
+          <a href="{% url 'ochiq_fakultetlar' %}" class="btn btn-oltin btn-lg">Fakultetlarni ko'rish</a>
+        </div></div>
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'talabalar/slaydlar/bitiruv.jpg' %}" alt="Bitiruv qalpoqlarini osmonga otayotgan bitiruvchilar" style="object-position:50% 60%">
+        <div class="slayd-matn"><div class="container">
+          <span class="slayd-belgi">Yutuqlar</span>
+          <h2>Maqsad sari har bir qadam muhim</h2>
+          <p>Birinchi kursdan bitiruvgacha bo'lgan yo'l.</p>
+          <a href="{% url 'ochiq_natijalar' %}" class="btn btn-oltin btn-lg">Natijalarni ko'rish</a>
+        </div></div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#slayder" data-bs-slide="prev" aria-label="Oldingi slayd"><i class="bi bi-chevron-left"></i></button>
+    <button class="carousel-control-next" type="button" data-bs-target="#slayder" data-bs-slide="next" aria-label="Keyingi slayd"><i class="bi bi-chevron-right"></i></button>
+  </div>
+</header>
+
+<div class="container raqamlar-qobiq">
+  <div class="raqamlar">
+    <div><i class="bi bi-people"></i><div class="stat-son">{{ talaba_soni }}</div><div class="nomi">Talaba</div></div>
+    <div><i class="bi bi-collection"></i><div class="stat-son">{{ guruh_soni }}</div><div class="nomi">Guruh</div></div>
+    <div><i class="bi bi-building"></i><div class="stat-son">{{ fakultet_soni }}</div><div class="nomi">Fakultet</div></div>
+    <div><i class="bi bi-book"></i><div class="stat-son">{{ fan_soni }}</div><div class="nomi">Fan</div></div>
+  </div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <section class="pt-3">
+    <h2 class="mb-4">Saytda nima qilish mumkin</h2>
+    <div class="row g-3">
+      <div class="col-sm-6 col-lg-3">
+        <a href="{% url 'ochiq_natijalar' %}" class="card havola-karta rasmli h-100">
+          <img src="{% static 'talabalar/slaydlar/bitiruv.jpg' %}" alt="" loading="lazy">
+          <div class="p-4 d-flex flex-column flex-grow-1">
+            <h3 class="h5 mb-2">Natijalar</h3>
+            <p class="text-muted small mb-3">{{ baho_soni }} ta bahoni fakultet, kurs va semestr bo'yicha solishtiring.</p>
+            <span class="havola-matn mt-auto">Ochish <i class="bi bi-arrow-right"></i></span>
+          </div>
+        </a>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <a href="{% url 'ochiq_fakultetlar' %}" class="card havola-karta rasmli h-100">
+          <img src="{% static 'talabalar/slaydlar/jamoa.jpg' %}" alt="" loading="lazy">
+          <div class="p-4 d-flex flex-column flex-grow-1">
+            <h3 class="h5 mb-2">Fakultetlar</h3>
+            <p class="text-muted small mb-3">{{ fakultet_soni }} ta fakultet, ularning guruhlari va natijalari.</p>
+            <span class="havola-matn mt-auto">Ochish <i class="bi bi-arrow-right"></i></span>
+          </div>
+        </a>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <a href="{% url 'ochiq_fanlar' %}" class="card havola-karta rasmli h-100">
+          <img src="{% static 'talabalar/slaydlar/kutubxona.jpg' %}" alt="" loading="lazy">
+          <div class="p-4 d-flex flex-column flex-grow-1">
+            <h3 class="h5 mb-2">Fanlar</h3>
+            <p class="text-muted small mb-3">{{ fan_soni }} ta fanni qidiring, saralang va natijasini ko'ring.</p>
+            <span class="havola-matn mt-auto">Ochish <i class="bi bi-arrow-right"></i></span>
+          </div>
+        </a>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <a href="{% url 'ochiq_gpa' %}" class="card havola-karta rasmli h-100">
+          <img src="{% static 'talabalar/slaydlar/talaba.jpg' %}" alt="" loading="lazy">
+          <div class="p-4 d-flex flex-column flex-grow-1">
+            <h3 class="h5 mb-2">GPA hisoblash</h3>
+            <p class="text-muted small mb-3">Ballaringizni kiriting va GPA'ingizni darhol bilib oling.</p>
+            <span class="havola-matn mt-auto">Ochish <i class="bi bi-arrow-right"></i></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+{% block skript %}
+<script>
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    new bootstrap.Carousel("#slayder", { interval: 6000, ride: "carousel" });
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% load static %}<!doctype html>
+<html lang="uz">
+<head>
+  {% include "talabalar/_bosh_qism.html" %}
+  <title>{% block title %}Talabalar bazasi{% endblock %}</title>
+  <meta name="description" content="Talabalar, guruhlar, fakultetlar va baholar bo'yicha umumiy statistika.">
+</head>
+<body class="d-flex flex-column min-vh-100">
+{% with u=request.resolver_match.url_name %}
+<nav class="navbar navbar-expand-md navbar-dark ochiq-nav {% block nav_sinf %}{% endblock %}" aria-label="Asosiy menyu">
+  <div class="container">
+    <a class="navbar-brand sarlavha-shrift" href="{% url 'ochiq_sahifa' %}"><i class="bi bi-mortarboard-fill tamgha me-2"></i>Talabalar bazasi</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ochiqMenyu" aria-controls="ochiqMenyu" aria-expanded="false" aria-label="Menyuni ochish"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="ochiqMenyu">
+      <ul class="navbar-nav ms-auto align-items-md-center gap-md-2">
+        <li class="nav-item"><a class="nav-link {% if u == 'ochiq_sahifa' %}active{% endif %}" href="{% url 'ochiq_sahifa' %}">Bosh sahifa</a></li>
+        <li class="nav-item"><a class="nav-link {% if u == 'ochiq_natijalar' %}active{% endif %}" href="{% url 'ochiq_natijalar' %}">Natijalar</a></li>
+        <li class="nav-item"><a class="nav-link {% if 'ochiq_fakultet' in u %}active{% endif %}" href="{% url 'ochiq_fakultetlar' %}">Fakultetlar</a></li>
+        <li class="nav-item"><a class="nav-link {% if 'ochiq_fan' in u %}active{% endif %}" href="{% url 'ochiq_fanlar' %}">Fanlar</a></li>
+        <li class="nav-item"><a class="nav-link {% if u == 'ochiq_gpa' %}active{% endif %}" href="{% url 'ochiq_gpa' %}">GPA hisoblash</a></li>
+        <li class="nav-item ms-md-2 mt-2 mt-md-0">
+          {% if user.is_authenticated %}
+            <a href="{% url 'bosh_sahifa' %}" class="btn btn-oltin">Boshqaruv paneli</a>
+          {% else %}
+            <a href="{% url 'login' %}" class="btn btn-oltin">Kirish</a>
+          {% endif %}
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endwith %}
+
+{% block bosh %}
+<header class="sahifa-bosh" style="background-image:url('{% block banner %}{% static 'talabalar/slaydlar/kutubxona.jpg' %}{% endblock %}')">
+  <div class="container">
+    {% block orqaga %}{% endblock %}
+    <h1>{% block sarlavha %}{% endblock %}</h1>
+    <p class="mb-0">{% block izoh %}{% endblock %}</p>
+  </div>
+</header>
+{% endblock %}
+
+<main class="flex-grow-1">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="ochiq-past py-4">
+  <div class="container d-flex flex-wrap gap-3 justify-content-between small">
+    <span>Talabalar bazasi</span>
+    <span>Shaxsiy ma'lumotlar bu sahifalarda ko'rsatilmaydi.</span>
+  </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block skript %}{% endblock %}
+</body>
+</html>

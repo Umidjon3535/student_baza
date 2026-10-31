@@ -1,0 +1,58 @@
+{% extends "talabalar/base.html" %}
+{% block content %}
+<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-4">
+  <h3 class="mb-0">{{ object.toliq_ism }}</h3>
+  <div>
+    <a href="{% url 'talaba_update' object.pk %}" class="btn btn-outline-secondary"><i class="bi bi-pencil me-1"></i>Tahrirlash</a>
+    <a href="{% url 'talaba_delete' object.pk %}" class="btn btn-outline-danger"><i class="bi bi-trash me-1"></i>O'chirish</a>
+    <a href="{% url 'talaba_list' %}" class="btn btn-outline-dark"><i class="bi bi-arrow-left"></i></a>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-5">
+    <div class="card p-4">
+      <div class="text-center mb-3">
+        <div class="stat-icon mx-auto" style="width:80px;height:80px;font-size:2.5rem">
+          <i class="bi bi-person"></i>
+        </div>
+      </div>
+      <table class="table table-sm mb-0">
+        <tr><th>Guruh</th><td>{{ object.guruh }} ({{ object.guruh.kurs }}-kurs)</td></tr>
+        <tr><th>Fakultet</th><td>{{ object.guruh.fakultet }}</td></tr>
+        <tr><th>Yo'nalish</th><td>{{ object.guruh.yonalish }}</td></tr>
+        <tr><th>Jinsi</th><td>{{ object.get_jinsi_display }}</td></tr>
+        <tr><th>Tug'ilgan sana</th><td>{{ object.tugilgan_sana|date:"d.m.Y" }}</td></tr>
+        <tr><th>Pasport</th><td>{{ object.passport }}</td></tr>
+        <tr><th>Telefon</th><td>{{ object.telefon|default:"—" }}</td></tr>
+        <tr><th>Email</th><td>{{ object.email|default:"—" }}</td></tr>
+        <tr><th>Manzil</th><td>{{ object.manzil|default:"—" }}</td></tr>
+        <tr><th>Qabul yili</th><td>{{ object.qabul_yili }}</td></tr>
+        <tr><th>Ta'lim shakli</th><td>{{ object.get_talim_shakli_display }}</td></tr>
+        <tr><th>Holati</th><td>{{ object.get_holati_display }}</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card p-4">
+      <div class="mb-3">
+        <h5 class="mb-0">Baholar {% if ortacha %}<small class="text-muted">— o'rtacha: {{ ortacha|floatformat:1 }}, GPA: {{ object.gpa|floatformat:2 }}</small>{% endif %}</h5>
+      </div>
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light"><tr><th>Fan</th><th>Semestr</th><th>Ball</th><th>Baho</th><th>Sana</th></tr></thead>
+        <tbody>
+        {% for b in baholar %}
+          <tr>
+            <td>{{ b.fan }}</td><td>{{ b.fan.semestr }}</td><td>{{ b.ball }}</td>
+            <td><span class="badge {% if b.baho == 5 %}text-bg-success{% elif b.baho == 4 %}text-bg-primary{% elif b.baho == 3 %}text-bg-warning{% else %}text-bg-danger{% endif %}">{{ b.baho }}</span></td>
+            <td class="small">{{ b.sana|date:"d.m.Y" }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="text-center text-muted py-3">Baholar yo'q</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

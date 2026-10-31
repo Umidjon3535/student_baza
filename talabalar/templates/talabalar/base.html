@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  {% include "talabalar/_bosh_qism.html" %}
+  <title>{% block title %}Talabalar bazasi{% endblock %}</title>
+</head>
+<body>
+<div class="tepa-qator d-flex d-md-none align-items-center justify-content-between px-3 py-2">
+  <a href="{% url 'bosh_sahifa' %}" class="text-white text-decoration-none fw-semibold"><i class="bi bi-mortarboard-fill tamgha me-2"></i>Talabalar bazasi</a>
+  <button class="btn btn-sm btn-outline-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#yonPanel" aria-controls="yonPanel" aria-label="Menyuni ochish"><i class="bi bi-list fs-5"></i></button>
+</div>
+<div class="ilova">
+  <nav class="yon-panel offcanvas-md offcanvas-start" tabindex="-1" id="yonPanel" aria-label="Asosiy menyu">
+    <div class="yon-ichki">
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <a href="{% url 'bosh_sahifa' %}" class="d-flex align-items-center text-white text-decoration-none">
+          <i class="bi bi-mortarboard-fill tamgha fs-3 me-2"></i><span class="sarlavha-shrift text-white fs-5">Talabalar bazasi</span>
+        </a>
+        <button type="button" class="btn-close btn-close-white d-md-none" data-bs-dismiss="offcanvas" data-bs-target="#yonPanel" aria-label="Yopish"></button>
+      </div>
+      {% with u=request.resolver_match.url_name %}
+      <ul class="nav flex-column">
+        <li><a class="nav-link {% if u == 'bosh_sahifa' %}active{% endif %}" href="{% url 'bosh_sahifa' %}"><i class="bi bi-speedometer2 me-2"></i>Bosh sahifa</a></li>
+        <li><a class="nav-link {% if 'talaba' in u %}active{% endif %}" href="{% url 'talaba_list' %}"><i class="bi bi-people me-2"></i>Talabalar</a></li>
+        <li><a class="nav-link {% if 'guruh' in u %}active{% endif %}" href="{% url 'guruh_list' %}"><i class="bi bi-collection me-2"></i>Guruhlar</a></li>
+        <li><a class="nav-link {% if 'fakultet' in u %}active{% endif %}" href="{% url 'fakultet_list' %}"><i class="bi bi-building me-2"></i>Fakultetlar</a></li>
+        <li><a class="nav-link {% if 'fan' in u %}active{% endif %}" href="{% url 'fan_list' %}"><i class="bi bi-book me-2"></i>Fanlar</a></li>
+        <li><a class="nav-link {% if 'baho' in u %}active{% endif %}" href="{% url 'baho_list' %}"><i class="bi bi-journal-check me-2"></i>Baholar</a></li>
+        <li><a class="nav-link {% if u == 'gpa_reyting' %}active{% endif %}" href="{% url 'gpa_reyting' %}"><i class="bi bi-award me-2"></i>GPA reyting</a></li>
+        <li><a class="nav-link {% if u == 'hisobotlar' %}active{% endif %}" href="{% url 'hisobotlar' %}"><i class="bi bi-bar-chart me-2"></i>Hisobotlar</a></li>
+        {% for m in menyular %}
+        <li><a class="nav-link {% if 'yozuv' in u and request.resolver_match.kwargs.menyu_pk == m.pk %}active{% endif %}" href="{% url 'yozuv_list' m.pk %}"><i class="bi {{ m.ikonka }} me-2"></i>{{ m.nomi }}</a></li>
+        {% endfor %}
+        <li><a class="nav-link {% if 'menyu' in u %}active{% endif %}" href="{% url 'menyu_list' %}"><i class="bi bi-list-ul me-2"></i>Menyular</a></li>
+        <li><a class="nav-link" href="{% url 'admin_panel' %}"><i class="bi bi-gear me-2"></i>Admin panel</a></li>
+        <li><a class="nav-link" href="{% url 'ochiq_sahifa' %}"><i class="bi bi-globe2 me-2"></i>Ochiq sahifa</a></li>
+      </ul>
+      {% endwith %}
+      <div class="mt-auto pt-3">
+        <hr class="mt-0">
+        <div class="foydalanuvchi mb-2"><i class="bi bi-person-circle me-1"></i>{{ user.username }}</div>
+        <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+          <button class="btn btn-sm btn-outline-light w-100"><i class="bi bi-box-arrow-right me-1"></i>Chiqish</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ilova-asosiy">
+    {% for m in messages %}
+      <div class="alert alert-{% if m.tags == 'error' %}danger{% else %}{{ m.tags }}{% endif %} alert-dismissible fade show">
+        {{ m }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Yopish"></button>
+      </div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

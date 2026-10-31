@@ -1,0 +1,49 @@
+{% extends "talabalar/base.html" %}
+{% block content %}
+<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-4">
+  <h3 class="mb-0">Baholar</h3>
+  <div>
+    <a href="{% url 'baho_eksport' %}{% if querystring %}?{{ querystring }}{% endif %}" class="btn btn-outline-success"><i class="bi bi-file-earmark-excel me-1"></i>Excel</a>
+    <a href="{% url 'baho_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Baho qo'yish</a>
+  </div>
+</div>
+<form method="get" class="card p-3 mb-3"><div class="row g-2">
+  {% if filtr.tartib %}<input type="hidden" name="tartib" value="{{ filtr.tartib }}">{% endif %}
+  <div class="col-md-4"><input type="text" name="id" value="{{ filtr.id }}" class="form-control" placeholder="ID: 3 yoki 1,5,7 yoki 10-20"></div>
+  <div class="col-md-4"><select name="fan" class="form-select" onchange="this.form.submit()">
+    <option value="">Barcha fanlar</option>
+    {% for f in fanlar %}<option value="{{ f.pk }}" {% if tanlangan_fan == f.pk|stringformat:"s" %}selected{% endif %}>{{ f }}</option>{% endfor %}
+  </select></div>
+  <div class="col-md-2 d-flex gap-1">
+    <button class="btn btn-dark w-100" title="Qidirish" aria-label="Qidirish"><i class="bi bi-search"></i></button>
+    <a href="{% url 'baho_list' %}" class="btn btn-outline-secondary" title="Tozalash" aria-label="Tozalash"><i class="bi bi-x-lg"></i></a>
+  </div>
+</div></form>
+<div class="card"><div class="table-responsive">
+  <table class="table table-hover align-middle mb-0">
+    <thead class="table-light"><tr>{% include "talabalar/_id_sarlavha.html" %}<th>Talaba</th><th>Fan</th><th>Ball</th><th>Baho</th><th>Sana</th><th class="text-end">Amallar</th></tr></thead>
+    <tbody>
+    {% for b in object_list %}
+      <tr>
+        <td>{{ b.pk }}</td>
+        <td><a href="{{ b.talaba.get_absolute_url }}" class="text-decoration-none">{{ b.talaba.familiya }} {{ b.talaba.ism }}</a></td>
+        <td>{{ b.fan }}</td><td>{{ b.ball }}</td>
+        <td><span class="badge {% if b.baho == 5 %}text-bg-success{% elif b.baho == 4 %}text-bg-primary{% elif b.baho == 3 %}text-bg-warning{% else %}text-bg-danger{% endif %}">{{ b.baho }}</span></td>
+        <td class="small">{{ b.sana|date:"d.m.Y" }}</td>
+        <td class="text-end text-nowrap">
+          <a href="{% url 'baho_update' b.pk %}" class="btn btn-sm btn-outline-secondary" title="Tahrirlash" aria-label="Tahrirlash"><i class="bi bi-pencil"></i></a>
+          <a href="{% url 'baho_delete' b.pk %}" class="btn btn-sm btn-outline-danger" title="O'chirish" aria-label="O'chirish"><i class="bi bi-trash"></i></a>
+        </td>
+      </tr>
+    {% empty %}<tr><td colspan="7" class="text-center text-muted py-4">Baholar yo'q</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div></div>
+{% if is_paginated %}
+<nav class="mt-3"><ul class="pagination justify-content-center">
+  {% for n in paginator.page_range %}
+    <li class="page-item {% if n == page_obj.number %}active{% endif %}"><a class="page-link" href="?page={{ n }}{% if querystring %}&{{ querystring }}{% endif %}">{{ n }}</a></li>
+  {% endfor %}
+</ul></nav>
+{% endif %}
+{% endblock %}

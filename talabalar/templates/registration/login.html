@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  {% include "talabalar/_bosh_qism.html" %}
+  <title>Kirish — Talabalar bazasi</title>
+</head>
+<body class="kirish-fon">
+<div class="container" style="max-width:420px">
+  <div class="card p-4 p-sm-5">
+    <div class="text-center mb-4">
+      <i class="bi bi-mortarboard-fill tamgha" style="font-size:2.6rem"></i>
+      <h1 class="h3 mt-2 mb-1">Talabalar bazasi</h1>
+      <p class="text-muted small mb-0">Xodimlar uchun kirish</p>
+    </div>
+    {% if form.errors %}<div class="alert alert-danger py-2">Login yoki parol noto'g'ri</div>{% endif %}
+    <form method="post">{% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label" for="id_username">Login</label>
+        <input type="text" name="username" id="id_username" class="form-control" autocomplete="username" required autofocus>
+      </div>
+      <div class="mb-4">
+        <label class="form-label" for="id_password">Parol</label>
+        <input type="password" name="password" id="id_password" class="form-control" autocomplete="current-password" required>
+      </div>
+      <input type="hidden" name="next" value="{{ next }}">
+      <button class="btn btn-primary w-100">Kirish</button>
+    </form>
+    <div class="text-center mt-3"><a href="{% url 'ochiq_sahifa' %}" class="small"><i class="bi bi-arrow-left me-1"></i>Ochiq sahifaga qaytish</a></div>
+  </div>
+</div>
+</body>
+</html>

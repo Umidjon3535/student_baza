@@ -1,0 +1,26 @@
+{% extends "talabalar/ochiq_base.html" %}
+{% block title %}{{ fan.nomi }} — Talabalar bazasi{% endblock %}
+{% block orqaga %}<a href="{% url 'ochiq_fanlar' %}" class="orqaga"><i class="bi bi-arrow-left me-1"></i>Barcha fanlar</a>{% endblock %}
+{% block sarlavha %}{{ fan.nomi }}{% endblock %}
+{% block izoh %}{{ fan.semestr }}-semestr · {{ fan.kredit }} kredit{% endblock %}
+{% block content %}
+<div class="container py-5">
+  {% include "talabalar/_ochiq_taqsimot.html" %}
+  {% if fakultetlar %}
+  <div class="card p-4">
+    <h2 class="h5 mb-3">Fakultetlar bo'yicha</h2>
+    {% for f in fakultetlar %}
+      <div class="reyting-qator">
+        <b>{{ f.nomi }}</b>
+        {% if f.ochiq_ortacha is not None %}
+          <div class="chiziqcha"><span style="width:{{ f.ochiq_ortacha|floatformat:0 }}%"></span></div>
+          <b class="text-end">{{ f.ochiq_ortacha|floatformat:1 }}</b>
+        {% else %}
+          <div class="text-muted small">Natija yashirilgan: {{ chegara }} nafardan kam talaba baholangan</div><b class="text-end">—</b>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

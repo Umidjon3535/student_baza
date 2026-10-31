@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 330" role="img" aria-labelledby="sarlavha">
+  <title id="sarlavha">GPA formulasi: baho ko'paytirilgan kredit yig'indisi bo'lingan kreditlar yig'indisi, 2-5 shkalada</title>
+  <rect x="1" y="1" width="518" height="328" rx="14" fill="#ffffff" stroke="#e3ded2" stroke-width="2"/>
+  <text x="28" y="44" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700" fill="#5d6b70">GPA formulasi (2–5 shkala)</text>
+
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#0f2f3a" text-anchor="middle">
+    <text x="82" y="122" font-size="34" font-weight="700">GPA</text>
+    <text x="146" y="122" font-size="34">=</text>
+    <text x="330" y="96" font-size="30"><tspan font-size="36">∑</tspan> (baho × kredit)</text>
+    <rect x="178" y="110" width="304" height="3" rx="1.5" fill="#d39a2c"/>
+    <text x="330" y="153" font-size="30"><tspan font-size="36">∑</tspan> kredit</text>
+  </g>
+
+  <line x1="28" y1="186" x2="492" y2="186" stroke="#e3ded2" stroke-width="2"/>
+  <text x="28" y="216" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700" fill="#5d6b70">Ball va baho</text>
+
+  <g font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">
+    <rect x="28" y="232" width="108" height="72" rx="10" fill="#0b4a52"/>
+    <text x="82" y="263" font-size="26" font-weight="700" fill="#ffffff">5</text>
+    <text x="82" y="289" font-size="17" fill="#ffffff">86–100</text>
+
+    <rect x="147" y="232" width="108" height="72" rx="10" fill="#0f6a73"/>
+    <text x="201" y="263" font-size="26" font-weight="700" fill="#ffffff">4</text>
+    <text x="201" y="289" font-size="17" fill="#ffffff">71–85</text>
+
+    <rect x="266" y="232" width="108" height="72" rx="10" fill="#dcecec"/>
+    <text x="320" y="263" font-size="26" font-weight="700" fill="#0f2f3a">3</text>
+    <text x="320" y="289" font-size="17" fill="#0f2f3a">55–70</text>
+
+    <rect x="385" y="232" width="107" height="72" rx="10" fill="#f1eee4"/>
+    <text x="438" y="263" font-size="26" font-weight="700" fill="#0f2f3a">2</text>
+    <text x="438" y="289" font-size="17" fill="#0f2f3a">0–54</text>
+  </g>
+</svg>

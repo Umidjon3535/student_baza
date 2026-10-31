@@ -1,0 +1,28 @@
+{% extends "talabalar/base.html" %}
+{% block content %}
+<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-4">
+  <h3 class="mb-0">Menyular</h3>
+  <a href="{% url 'menyu_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Yangi menyu</a>
+</div>
+{% include "talabalar/_id_filtr.html" %}
+<div class="card"><div class="table-responsive">
+  <table class="table table-hover align-middle mb-0">
+    <thead class="table-light"><tr>{% include "talabalar/_id_sarlavha.html" %}<th>Nomi</th><th>Havola</th><th>Ikonka</th><th>Tartib</th><th class="text-end">Amallar</th></tr></thead>
+    <tbody>
+    {% for m in object_list %}
+      <tr>
+        <td>{{ m.pk }}</td>
+        <td class="fw-semibold"><a href="{% url 'yozuv_list' m.pk %}" class="text-decoration-none">{{ m.nomi }}</a></td>
+        <td class="small">{{ m.havola|default:"—" }}</td>
+        <td><i class="bi {{ m.ikonka }}"></i> <span class="small text-muted">{{ m.ikonka }}</span></td>
+        <td>{{ m.tartib }}</td>
+        <td class="text-end text-nowrap">
+          <a href="{% url 'menyu_update' m.pk %}" class="btn btn-sm btn-outline-secondary" title="Tahrirlash" aria-label="Tahrirlash"><i class="bi bi-pencil"></i></a>
+          <a href="{% url 'menyu_delete' m.pk %}" class="btn btn-sm btn-outline-danger" title="O'chirish" aria-label="O'chirish"><i class="bi bi-trash"></i></a>
+        </td>
+      </tr>
+    {% empty %}<tr><td colspan="6" class="text-center text-muted py-4">Menyular yo'q</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div></div>
+{% endblock %}

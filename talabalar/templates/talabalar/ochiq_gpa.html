@@ -1,0 +1,55 @@
+{% extends "talabalar/ochiq_base.html" %}
+{% load static %}
+{% block title %}GPA hisoblash — Talabalar bazasi{% endblock %}
+{% block banner %}{% static 'talabalar/slaydlar/talaba.jpg' %}{% endblock %}
+{% block sarlavha %}GPA hisoblash{% endblock %}
+{% block izoh %}Ballaringizni kiriting va GPA'ingizni bilib oling. Kiritilgan ballar saqlanmaydi.{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row g-4 align-items-start">
+    <div class="col-lg-7">
+      <form method="get" class="card p-4">
+        <h2 class="h5 mb-3">Fanlar bo'yicha ballar</h2>
+        {% for f in fanlar %}
+          <div class="gpa-qator">
+            <label for="ball_{{ f.pk }}"><b>{{ f.nomi }}</b> <span class="text-muted small d-block">{{ f.semestr }}-semestr · {{ f.kredit }} kredit</span></label>
+            <div>
+              <input id="ball_{{ f.pk }}" name="ball_{{ f.pk }}" type="number" min="0" max="100" inputmode="numeric" placeholder="0–100" value="{{ f.kiritilgan }}" class="form-control {% if f.xato %}is-invalid{% endif %}">
+              {% if f.xato %}<div class="invalid-feedback">0 dan 100 gacha butun son kiriting</div>{% endif %}
+            </div>
+            <span class="gpa-baho">{% if f.baho %}<span class="badge {% if f.baho == 5 %}text-bg-success{% elif f.baho == 4 %}text-bg-primary{% elif f.baho == 3 %}text-bg-warning{% else %}text-bg-danger{% endif %}">{{ f.baho }}</span>{% endif %}</span>
+          </div>
+        {% empty %}<p class="text-muted">Fanlar hali qo'shilmagan.</p>{% endfor %}
+        {% if fanlar %}
+        <div class="d-flex gap-2 mt-4">
+          <button class="btn btn-primary"><i class="bi bi-calculator me-1"></i>Hisoblash</button>
+          <a href="{% url 'ochiq_gpa' %}" class="btn btn-outline-secondary">Tozalash</a>
+        </div>
+        {% endif %}
+      </form>
+    </div>
+    <div class="col-lg-5">
+      <div class="card p-4">
+        {% if gpa is not None %}
+          <div class="text-muted small">Sizning GPA'ingiz</div>
+          <div class="stat-son gpa-son">{{ gpa|floatformat:2 }}</div>
+          <p class="fw-semibold mb-3">
+            {% if gpa >= 4.5 %}A'lo natija{% elif gpa >= 3.5 %}Yaxshi natija{% elif gpa >= 3 %}Qoniqarli natija{% else %}Qoniqarsiz, fanlarni qayta topshirish kerak bo'lishi mumkin{% endif %}
+          </p>
+          <div class="d-flex justify-content-between py-1 border-top"><span class="text-muted">O'rtacha ball</span><b>{{ ortacha|floatformat:1 }}</b></div>
+          <div class="d-flex justify-content-between py-1 border-top"><span class="text-muted">Jami kredit</span><b>{{ kredit }}</b></div>
+        {% elif kiritildi %}
+          <p class="mb-0 text-muted">Tanlangan fanlarda kredit yo'q, shuning uchun GPA hisoblanmadi.</p>
+        {% else %}
+          <i class="bi bi-calculator fs-2 tamgha"></i>
+          <h2 class="h5 mt-2">Natija shu yerda chiqadi</h2>
+          <p class="text-muted mb-0">Kamida bitta fanga ball kiriting va "Hisoblash" tugmasini bosing.</p>
+        {% endif %}
+        {% if xato %}<div class="alert alert-danger mt-3 mb-0 py-2 small">Noto'g'ri kiritilgan ballar hisobga olinmadi.</div>{% endif %}
+      </div>
+      <img src="{% static 'talabalar/gpa_formula.svg' %}" class="img-fluid w-100 mt-3" width="520" height="330" alt="GPA = (baho × kredit) yig'indisi / kreditlar yig'indisi, 2–5 shkalada. Baholar: 86–100 ball: 5, 71–85: 4, 55–70: 3, 0–54: 2.">
+      <p class="text-muted small mt-2 mb-0">Har bir fan bahosi uning krediti bilan ko'paytirilib qo'shiladi, keyin jami kreditga bo'linadi.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

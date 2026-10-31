@@ -1,0 +1,37 @@
+{% extends "talabalar/base.html" %}
+{% block content %}
+<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-4">
+  <h3 class="mb-0"><i class="bi {{ menyu.ikonka }} me-2"></i>{{ menyu.nomi }}</h3>
+  <div>
+    {% if menyu.havola %}<a href="{{ menyu.havola }}" class="btn btn-outline-secondary"><i class="bi bi-box-arrow-up-right me-1"></i>Havolani ochish</a>{% endif %}
+    <a href="{% url 'yozuv_create' menyu.pk %}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Yozuv qo'shish</a>
+  </div>
+</div>
+{% include "talabalar/_id_filtr.html" %}
+<div class="card"><div class="table-responsive">
+  <table class="table table-hover align-middle mb-0">
+    <thead class="table-light"><tr>{% include "talabalar/_id_sarlavha.html" %}<th>Sarlavha</th><th>Matn</th><th>Sana</th><th class="text-end">Amallar</th></tr></thead>
+    <tbody>
+    {% for y in object_list %}
+      <tr>
+        <td>{{ y.pk }}</td>
+        <td class="fw-semibold">{{ y.sarlavha }}</td>
+        <td>{{ y.matn|linebreaksbr|default:"—" }}</td>
+        <td class="small text-nowrap">{{ y.yaratilgan|date:"d.m.Y" }}</td>
+        <td class="text-end text-nowrap">
+          <a href="{% url 'yozuv_update' menyu.pk y.pk %}" class="btn btn-sm btn-outline-secondary" title="Tahrirlash" aria-label="Tahrirlash"><i class="bi bi-pencil"></i></a>
+          <a href="{% url 'yozuv_delete' menyu.pk y.pk %}" class="btn btn-sm btn-outline-danger" title="O'chirish" aria-label="O'chirish"><i class="bi bi-trash"></i></a>
+        </td>
+      </tr>
+    {% empty %}<tr><td colspan="5" class="text-center text-muted py-4">Yozuvlar yo'q</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div></div>
+{% if is_paginated %}
+<nav class="mt-3"><ul class="pagination justify-content-center">
+  {% for n in paginator.page_range %}
+    <li class="page-item {% if n == page_obj.number %}active{% endif %}"><a class="page-link" href="?page={{ n }}{% if querystring %}&{{ querystring }}{% endif %}">{{ n }}</a></li>
+  {% endfor %}
+</ul></nav>
+{% endif %}
+{% endblock %}

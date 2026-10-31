@@ -1,0 +1,8 @@
+<form method="get" class="card p-3 mb-3"><div class="row g-2">
+  {% if filtr.tartib %}<input type="hidden" name="tartib" value="{{ filtr.tartib }}">{% endif %}
+  <div class="col-md-4"><input type="text" name="id" value="{{ filtr.id }}" class="form-control" placeholder="ID: 3 yoki 1,5,7 yoki 10-20"></div>
+  <div class="col-md-2 d-flex gap-1">
+    <button class="btn btn-dark w-100" title="Qidirish" aria-label="Qidirish"><i class="bi bi-search"></i></button>
+    <a href="{{ request.path }}" class="btn btn-outline-secondary" title="Tozalash" aria-label="Tozalash"><i class="bi bi-x-lg"></i></a>
+  </div>
+</div></form>

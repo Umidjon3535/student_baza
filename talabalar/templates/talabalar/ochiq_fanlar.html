@@ -1,0 +1,51 @@
+{% extends "talabalar/ochiq_base.html" %}
+{% block title %}Fanlar — Talabalar bazasi{% endblock %}
+{% block sarlavha %}Fanlar{% endblock %}
+{% block izoh %}Fanlarni qidiring, semestr bo'yicha tanlang va saralang.{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <form method="get" class="card p-3 mb-4">
+    <div class="row g-2">
+      <div class="col-md-5">
+        <label class="form-label small" for="f-q">Qidirish</label>
+        <input id="f-q" type="search" name="q" value="{{ q }}" class="form-control" placeholder="Fan nomini kiriting">
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label small" for="f-semestr">Semestr</label>
+        <select id="f-semestr" name="semestr" class="form-select" onchange="this.form.submit()">
+          <option value="">Barchasi</option>
+          {% for s in semestrlar %}<option value="{{ s }}" {% if semestr == s|stringformat:"s" %}selected{% endif %}>{{ s }}-semestr</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-6 col-md-2">
+        <label class="form-label small" for="f-tartib">Saralash</label>
+        <select id="f-tartib" name="tartib" class="form-select" onchange="this.form.submit()">
+          {% for k, v in tartiblar %}<option value="{{ k }}" {% if tartib == k %}selected{% endif %}>{{ v }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2 d-flex align-items-end gap-1">
+        <button class="btn btn-dark w-100">Qidirish</button>
+        <a href="{% url 'ochiq_fanlar' %}" class="btn btn-outline-secondary" title="Tozalash" aria-label="Tozalash"><i class="bi bi-x-lg"></i></a>
+      </div>
+    </div>
+  </form>
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead><tr><th>Fan</th><th>Semestr</th><th>Kredit</th><th>O'rtacha ball</th><th class="d-none d-sm-table-cell"></th></tr></thead>
+        <tbody>
+        {% for f in fanlar %}
+          <tr>
+            <td class="fw-semibold"><a href="{% url 'ochiq_fan' f.pk %}" class="text-decoration-none">{{ f.nomi }}</a></td>
+            <td>{{ f.semestr }}</td><td>{{ f.kredit }}</td>
+            <td>{% if f.ochiq_ortacha is not None %}{{ f.ochiq_ortacha|floatformat:1 }}{% else %}—{% endif %}</td>
+            <td class="text-end d-none d-sm-table-cell"><a href="{% url 'ochiq_fan' f.pk %}" class="btn btn-sm btn-outline-primary text-nowrap">Batafsil</a></td>
+          </tr>
+        {% empty %}<tr><td colspan="5" class="text-center text-muted py-4">Fan topilmadi</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="text-muted small mt-2">Maxfiylik uchun {{ chegara }} nafardan kam talaba baholangan bo'lsa, o'rtacha ball ko'rsatilmaydi.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "talabalar/base.html" %}
+{% block content %}
+<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-4">
+  <h3 class="mb-0">Fakultetlar</h3>
+  <a href="{% url 'fakultet_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Yangi fakultet</a>
+</div>
+{% include "talabalar/_id_filtr.html" %}
+<div class="card"><div class="table-responsive">
+  <table class="table table-hover align-middle mb-0">
+    <thead class="table-light"><tr>{% include "talabalar/_id_sarlavha.html" %}<th>Nomi</th><th>Dekan</th><th>Telefon</th><th>Guruhlar</th><th>Talabalar</th><th class="text-end">Amallar</th></tr></thead>
+    <tbody>
+    {% for f in object_list %}
+      <tr>
+        <td>{{ f.pk }}</td>
+        <td class="fw-semibold"><a href="{% url 'talaba_list' %}?fakultet={{ f.pk }}" class="text-decoration-none">{{ f.nomi }}</a></td>
+        <td>{{ f.dekan|default:"—" }}</td><td>{{ f.telefon|default:"—" }}</td>
+        <td>{{ f.guruh_soni }}</td><td>{{ f.talaba_soni }}</td>
+        <td class="text-end text-nowrap">
+          <a href="{% url 'fakultet_update' f.pk %}" class="btn btn-sm btn-outline-secondary" title="Tahrirlash" aria-label="Tahrirlash"><i class="bi bi-pencil"></i></a>
+          <a href="{% url 'fakultet_delete' f.pk %}" class="btn btn-sm btn-outline-danger" title="O'chirish" aria-label="O'chirish"><i class="bi bi-trash"></i></a>
+        </td>
+      </tr>
+    {% empty %}<tr><td colspan="7" class="text-center text-muted py-4">Fakultetlar yo'q</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div></div>
+{% endblock %}

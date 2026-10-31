@@ -1,0 +1,30 @@
+{% extends "talabalar/ochiq_base.html" %}
+{% load static %}
+{% block title %}Fakultetlar — Talabalar bazasi{% endblock %}
+{% block banner %}{% static 'talabalar/slaydlar/jamoa.jpg' %}{% endblock %}
+{% block sarlavha %}Fakultetlar{% endblock %}
+{% block izoh %}Fakultetni tanlab, guruhlari va natijalarini ko'ring.{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <form method="get" class="card p-3 mb-4">
+    <div class="d-flex gap-2">
+      <input type="search" name="q" value="{{ q }}" class="form-control" placeholder="Fakultet nomini kiriting" aria-label="Fakultet qidirish">
+      <button class="btn btn-dark" aria-label="Qidirish"><i class="bi bi-search"></i></button>
+      {% if q %}<a href="{% url 'ochiq_fakultetlar' %}" class="btn btn-outline-secondary" title="Tozalash" aria-label="Tozalash"><i class="bi bi-x-lg"></i></a>{% endif %}
+    </div>
+  </form>
+  <div class="row g-3">
+    {% for f in fakultetlar %}
+      <div class="col-md-6 col-lg-4">
+        <a href="{% url 'ochiq_fakultet' f.pk %}" class="card havola-karta p-4 h-100">
+          <h2 class="h5 mb-3">{{ f.nomi }}</h2>
+          <div class="d-flex justify-content-between py-1"><span class="text-muted">Guruhlar</span><b>{{ f.guruh_soni }}</b></div>
+          <div class="d-flex justify-content-between py-1"><span class="text-muted">Talabalar</span><b>{{ f.soni }}</b></div>
+          <div class="d-flex justify-content-between py-1"><span class="text-muted">O'rtacha ball</span><b>{% if f.ochiq_ortacha is not None %}{{ f.ochiq_ortacha|floatformat:1 }}{% else %}—{% endif %}</b></div>
+          <span class="havola-matn mt-auto pt-3">Batafsil <i class="bi bi-arrow-right"></i></span>
+        </a>
+      </div>
+    {% empty %}<div class="col-12"><div class="card p-4 text-center text-muted">Fakultet topilmadi.</div></div>{% endfor %}
+  </div>
+</div>
+{% endblock %}
