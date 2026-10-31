@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 import os
 from pathlib import Path
 
+from .vercel_baza import bazani_tayyorlash
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,7 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', '1') == '1'
+VERCEL = bool(os.environ.get('VERCEL'))
+DEBUG = os.environ.get('DJANGO_DEBUG', '0' if VERCEL else '1') == '1'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 if DEBUG:
@@ -31,7 +34,11 @@ else:
 
 # Vergul bilan: DJANGO_ALLOWED_HOSTS=sayt.uz  DJANGO_CSRF_TRUSTED_ORIGINS=https://sayt.uz
 ALLOWED_HOSTS = [h for h in os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',') if h]
+if VERCEL:
+    ALLOWED_HOSTS.append('.vercel.app')
 CSRF_TRUSTED_ORIGINS = [o for o in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if o]
+if VERCEL:
+    CSRF_TRUSTED_ORIGINS.append('https://*.vercel.app')
 
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
@@ -89,6 +96,15 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+if VERCEL:
+    DATABASES['default']['NAME'] = Path('/tmp/db.sqlite3')
+    bazani_tayyorlash(
+        BASE_DIR / 'db.sqlite3', DATABASES['default']['NAME'], os.environ.get('DJANGO_ADMIN_PASSWORD_HASH')
+    )
+    # Har bir server nusxasining bazasi alohida, shuning uchun sessiya cookie'da saqlanadi
+    SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
 
 # Password validation

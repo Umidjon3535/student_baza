@@ -43,7 +43,13 @@ gunicorn config.wsgi
 ```
 
 `DJANGO_DEBUG=0` bo'lganda sayt faqat HTTPS orqali ishlashi kerak (kirish cookie'lari shuni talab qiladi).
-SQLite fayli saqlanib qoladigan server kerak; fayl tizimi vaqtinchalik bo'lgan xizmatlarda (masalan, Vercel) o'zgarishlar yo'qoladi.
+SQLite fayli saqlanib qoladigan server kerak.
+
+### Vercel
+
+`DJANGO_SECRET_KEY` va `DJANGO_ADMIN_PASSWORD_HASH` (`make_password` natijasi) muhit o'zgaruvchilari kerak.
+Vercel'da loyiha fayllari faqat o'qish uchun, shuning uchun baza `/tmp` ga nusxalanadi: paneldagi o'zgarishlar **saqlanib qolmaydi** va server qayta ishga tushganda yo'qoladi.
+Doimiy saqlash uchun tashqi baza (masalan, Postgres) kerak.
 
 ## Jadvallar (ER modeli)
 

@@ -1,10 +1,15 @@
+import sqlite3
+import tempfile
 from datetime import date
 from io import BytesIO
+from pathlib import Path
 
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 from openpyxl import load_workbook
+
+from config.vercel_baza import bazani_tayyorlash
 
 from .models import Baho, Fakultet, Fan, Guruh, Menyu, Talaba, Yozuv
 
@@ -295,3 +300,34 @@ class SahifalarTest(TestCase):
 
     def test_notogri_tartib_etiborsiz_qoldiriladi(self):
         self.assertEqual(len(self.royxat_idlari("talaba_list", tartib="parol")), 5)
+
+
+class VercelBazaTest(TestCase):
+    def tayyorla(self, parol_hash):
+        with tempfile.TemporaryDirectory() as papka:
+            manba, nusxa = Path(papka, "manba.sqlite3"), Path(papka, "nusxa.sqlite3")
+            ulanish = sqlite3.connect(manba)
+            ulanish.execute("CREATE TABLE auth_user (username TEXT, password TEXT)")
+            ulanish.execute("CREATE TABLE django_session (session_key TEXT)")
+            ulanish.executemany("INSERT INTO auth_user VALUES (?, 'eski')", [("admin",), ("boshqa",)])
+            ulanish.execute("INSERT INTO django_session VALUES ('kalit')")
+            ulanish.commit()
+            ulanish.close()
+            bazani_tayyorlash(manba, nusxa, parol_hash)
+            ulanish = sqlite3.connect(nusxa)
+            parollar = dict(ulanish.execute("SELECT username, password FROM auth_user"))
+            sessiyalar = ulanish.execute("SELECT count(*) FROM django_session").fetchone()[0]
+            ulanish.close()
+            manba_ulanish = sqlite3.connect(manba)
+            manba_parol = manba_ulanish.execute("SELECT password FROM auth_user LIMIT 1").fetchone()[0]
+            manba_ulanish.close()
+        return parollar, sessiyalar, manba_parol
+
+    def test_repodagi_parol_va_sessiyalar_almashtiriladi(self):
+        parollar, sessiyalar, manba_parol = self.tayyorla("yangi-hash")
+        self.assertEqual(parollar, {"admin": "yangi-hash", "boshqa": "!"})
+        self.assertEqual(sessiyalar, 0)
+        self.assertEqual(manba_parol, "eski")
+
+    def test_hash_berilmasa_hech_kim_kirolmaydi(self):
+        self.assertEqual(self.tayyorla(None)[0], {"admin": "!", "boshqa": "!"})

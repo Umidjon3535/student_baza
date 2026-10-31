@@ -8,3 +8,8 @@ build/
 *.log
 .idea/
 .DS_Store
+staticfiles/
+.vercel/
+
+.vercel
+.env*

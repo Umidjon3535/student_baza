@@ -47,6 +47,9 @@
   </nav>
 
   <main class="ilova-asosiy">
+    {% if vaqtinchalik_baza %}
+      <div class="alert alert-warning"><i class="bi bi-exclamation-triangle me-1"></i>Sinov rejimi: bu serverda kiritilgan o'zgarishlar saqlanib qolmaydi va istalgan payt yo'qolishi mumkin.</div>
+    {% endif %}
     {% for m in messages %}
       <div class="alert alert-{% if m.tags == 'error' %}danger{% else %}{{ m.tags }}{% endif %} alert-dismissible fade show">
         {{ m }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Yopish"></button>
